@@ -1,32 +1,23 @@
-=<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="id">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Genius AI Quiz - Ultimate Edition</title>
-    
-    <!-- Libraries -->
+    <title>Genius AI Quiz - Ultimate DB</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <script src="https://html2canvas.hertzen.com/dist/html2canvas.min.js"></script> <!-- Library Screenshot -->
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;800&family=Plus+Jakarta+Sans:wght@400;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    
     <style>
-        body { font-family: 'Plus Jakarta Sans', sans-serif; background: #020617; color: white; overflow-x: hidden; transition: background 1s ease; }
+        body { font-family: 'Plus Jakarta Sans', sans-serif; background: #020617; color: white; overflow-x: hidden; }
         h1, h2, h3, .brand-font { font-family: 'Outfit', sans-serif; }
         
-        /* Background Layer */
-        #dynamic-bg {
-            position: fixed; inset: 0; z-index: -2;
-            background-size: cover; background-position: center;
-            filter: brightness(0.3) blur(4px); /* Gelapkan biar teks kebaca */
-            transition: all 1s ease-in-out;
-        }
+        /* Animasi Background */
+        .bg-animated { background: radial-gradient(circle at 50% 50%, #1e1b4b, #020617); position: fixed; inset: 0; z-index: -2; }
         .blob { position: absolute; width: 500px; height: 500px; background: linear-gradient(180deg, rgba(79, 70, 229, 0.4) 0%, rgba(124, 58, 237, 0.2) 100%); border-radius: 50%; filter: blur(80px); z-index: -1; animation: float 10s infinite alternate; }
         @keyframes float { 0% { transform: translate(0, 0) scale(1); } 100% { transform: translate(30px, -30px) scale(1.1); } }
 
         /* Glassmorphism */
-        .glass-card { background: rgba(15, 23, 42, 0.75); backdrop-filter: blur(20px); border: 1px solid rgba(255, 255, 255, 0.1); box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5); }
+        .glass-card { background: rgba(15, 23, 42, 0.6); backdrop-filter: blur(16px); border: 1px solid rgba(255, 255, 255, 0.08); box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5); }
         .btn-primary { background: linear-gradient(135deg, #4f46e5 0%, #7c3aed 100%); transition: all 0.3s; }
         .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 10px 25px -5px rgba(124, 58, 237, 0.5); filter: brightness(1.1); }
         
@@ -43,21 +34,12 @@
         @keyframes loader-dots1 { 0% { transform: scale(0); } 100% { transform: scale(1); } }
         @keyframes loader-dots3 { 0% { transform: scale(1); } 100% { transform: scale(0); } }
         @keyframes loader-dots2 { 0% { transform: translate(0, 0); } 100% { transform: translate(24px, 0); } }
-
-        /* Share Card (Hidden by default) */
-        #share-card-template {
-            width: 400px; height: 600px;
-            background: linear-gradient(180deg, #0f172a 0%, #1e1b4b 100%);
-            position: fixed; left: -9999px; top: 0; z-index: -10;
-            display: flex; flex-direction: column; align-items: center; justify-content: center;
-            padding: 2rem; border: 4px solid #4f46e5;
-        }
     </style>
 </head>
 <body class="min-h-screen flex items-center justify-center p-4">
 
     <!-- Background -->
-    <div id="dynamic-bg"></div>
+    <div class="bg-animated"></div>
     <div class="blob top-0 left-0"></div>
     <div class="blob bottom-0 right-0" style="background: linear-gradient(180deg, rgba(236, 72, 153, 0.3) 0%, rgba(239, 68, 68, 0.1) 100%); width:400px; height:400px;"></div>
 
@@ -94,8 +76,8 @@
             </div>
 
             <div class="space-y-4">
-                <button onclick="bukaKuis()" class="w-full h-32 rounded-2xl relative overflow-hidden group border border-blue-500/30">
-                    <div class="absolute inset-0 bg-gradient-to-r from-blue-600 to-cyan-500 opacity-80 transition group-hover:opacity-100"></div>
+                <button onclick="bukaKuis()" class="w-full h-32 rounded-2xl relative overflow-hidden group">
+                    <div class="absolute inset-0 bg-gradient-to-r from-blue-600 to-cyan-500 opacity-90 transition group-hover:opacity-100"></div>
                     <div class="absolute inset-0 flex items-center justify-between px-8">
                         <div class="text-left">
                             <h3 class="text-2xl font-bold text-white">Mulai Kuis</h3>
@@ -105,8 +87,8 @@
                     </div>
                 </button>
 
-                <button onclick="bukaLeaderboard()" class="w-full h-24 rounded-2xl relative overflow-hidden group border border-purple-500/30">
-                    <div class="absolute inset-0 bg-gradient-to-r from-purple-600 to-pink-500 opacity-80 transition group-hover:opacity-100"></div>
+                <button onclick="bukaLeaderboard()" class="w-full h-24 rounded-2xl relative overflow-hidden group">
+                    <div class="absolute inset-0 bg-gradient-to-r from-purple-600 to-pink-500 opacity-90 transition group-hover:opacity-100"></div>
                     <div class="absolute inset-0 flex items-center justify-between px-8">
                         <div class="text-left">
                             <h3 class="text-xl font-bold text-white">Leaderboard</h3>
@@ -126,7 +108,7 @@
             <div class="space-y-6">
                 <div>
                     <label class="block text-sm text-slate-400 mb-2">Topik Bahasan</label>
-                    <input type="text" id="input-topik" placeholder="Cth: Sejarah, Mobile Legends, K-Pop..." class="w-full bg-slate-900/50 border border-slate-700 rounded-xl p-4 text-white focus:border-cyan-500 outline-none">
+                    <input type="text" id="input-topik" placeholder="Cth: Sejarah Indo, Mobile Legends..." class="w-full bg-slate-900/50 border border-slate-700 rounded-xl p-4 text-white focus:border-cyan-500 outline-none">
                 </div>
                 
                 <div class="grid grid-cols-2 gap-4">
@@ -159,8 +141,8 @@
                 <div class="absolute top-0 w-3 h-3 rounded-full bg-white"></div>
                 <div class="absolute top-0 w-3 h-3 rounded-full bg-white"></div>
             </div>
-            <h3 class="text-xl font-bold animate-pulse text-indigo-300">AI Lagi Meracik Soal...</h3>
-            <p class="text-slate-400 text-sm mt-3">Sambil ganti background sesuai topik...</p>
+            <h3 class="text-xl font-bold animate-pulse text-indigo-300">AI Lagi Mikir...</h3>
+            <p class="text-slate-400 text-sm mt-3">Sabar yak, jangan direfresh!</p>
         </div>
 
         <!-- VIEW 5: GAMEPLAY -->
@@ -189,17 +171,11 @@
             <h2 class="text-4xl font-black text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-pink-400 mb-2" id="final-score">0</h2>
             <p id="final-msg" class="text-white font-medium mb-8">Pesan akhir</p>
 
-            <div class="grid grid-cols-2 gap-3">
-                <button onclick="bukaReview()" class="bg-red-500/20 border border-red-500 hover:bg-red-500 text-white py-3 rounded-xl font-bold transition text-sm">
-                    <i class="fa-solid fa-clipboard-check mr-2"></i> Review Salah
-                </button>
-                <button onclick="shareSkor()" class="bg-pink-500/20 border border-pink-500 hover:bg-pink-500 text-white py-3 rounded-xl font-bold transition text-sm">
-                    <i class="fa-solid fa-share-nodes mr-2"></i> Share IG
-                </button>
-                <button onclick="bukaLeaderboard()" class="bg-slate-700 hover:bg-slate-600 text-white py-3 rounded-xl font-bold transition text-sm">
+            <div class="grid grid-cols-2 gap-4">
+                <button onclick="bukaLeaderboard()" class="bg-slate-700 hover:bg-slate-600 text-white py-3 rounded-xl font-bold">
                     <i class="fa-solid fa-trophy mr-2"></i> Rank
                 </button>
-                <button onclick="kembaliKeMenu()" class="bg-indigo-600 hover:bg-indigo-500 text-white py-3 rounded-xl font-bold transition text-sm">
+                <button onclick="kembaliKeMenu()" class="bg-indigo-600 hover:bg-indigo-500 text-white py-3 rounded-xl font-bold">
                     <i class="fa-solid fa-house mr-2"></i> Menu
                 </button>
             </div>
@@ -210,50 +186,29 @@
             <div class="flex justify-between items-center mb-6">
                 <button onclick="kembaliKeMenu()" class="text-slate-400 hover:text-white"><i class="fa-solid fa-arrow-left"></i></button>
                 <h2 class="text-xl font-bold brand-font">DATABASE SEPUH 🏆</h2>
+                <!-- Tombol Download JSON -->
                 <button onclick="DB.downloadJSON()" class="text-green-400 hover:text-green-300 text-sm" title="Download Database">
                     <i class="fa-solid fa-file-arrow-down text-xl"></i>
                 </button>
             </div>
+
             <div class="flex-1 overflow-y-auto pr-2 custom-scroll">
                 <table class="w-full text-left border-collapse">
                     <thead class="text-xs text-slate-500 uppercase sticky top-0 bg-[#0f172a] z-10">
-                        <tr><th class="py-3 pl-2">#</th><th class="py-3">Player</th><th class="py-3 text-right pr-2">Skor</th></tr>
+                        <tr>
+                            <th class="py-3 pl-2">#</th>
+                            <th class="py-3">Player</th>
+                            <th class="py-3 text-right pr-2">Skor</th>
+                        </tr>
                     </thead>
-                    <tbody id="tbody-leaderboard" class="text-sm"></tbody>
+                    <tbody id="tbody-leaderboard" class="text-sm">
+                        <!-- Data JS -->
+                    </tbody>
                 </table>
             </div>
+            <p class="text-center text-xs text-slate-600 mt-2">Data tersimpan lokal di browser (Indexed JSON)</p>
         </div>
 
-        <!-- VIEW 8: REVIEW WRONG ANSWERS -->
-        <div id="view-review" class="hidden glass-card rounded-3xl p-6 animate-enter h-[500px] flex flex-col">
-            <div class="flex justify-between items-center mb-6">
-                <button onclick="showView('view-result')" class="text-slate-400 hover:text-white"><i class="fa-solid fa-arrow-left"></i></button>
-                <h2 class="text-xl font-bold brand-font text-red-400">REVIEW KESALAHAN</h2>
-                <div class="w-4"></div>
-            </div>
-            <div id="container-review" class="flex-1 overflow-y-auto pr-2 space-y-4">
-                <!-- List Kesalahan JS -->
-            </div>
-        </div>
-
-    </div>
-
-    <!-- TEMPLATE SHARE CARD (INVISIBLE) -->
-    <div id="share-card-template">
-        <div class="text-center">
-            <img id="share-avatar" src="" class="w-24 h-24 rounded-full border-4 border-white shadow-xl mx-auto mb-4 bg-slate-800">
-            <h2 id="share-name" class="text-3xl font-black text-white mb-1">Nama</h2>
-            <p id="share-topic" class="text-indigo-300 uppercase tracking-widest text-sm mb-6">Topik</p>
-            
-            <div class="bg-white/10 backdrop-blur-md p-6 rounded-2xl border border-white/20 w-full mb-6">
-                <p class="text-sm text-slate-300">TOTAL SCORE</p>
-                <h1 id="share-score" class="text-7xl font-black text-transparent bg-clip-text bg-gradient-to-r from-yellow-300 to-pink-500">100</h1>
-            </div>
-            
-            <div class="text-slate-400 text-sm">
-                <i class="fa-solid fa-robot mr-2"></i> Genius AI Quiz
-            </div>
-        </div>
     </div>
 
     <!-- Audio -->
@@ -262,44 +217,71 @@
     <audio id="sfx-win" src="https://assets.mixkit.co/active_storage/sfx/1435/1435-preview.mp3"></audio>
 
     <script>
-        // --- DATABASE SYSTEM (JSON) ---
+        // --- DATABASE SYSTEM (JSON BASED) ---
         const DB = {
             key: 'quiz_leaderboard_json',
-            getAll: function() { return JSON.parse(localStorage.getItem(this.key) || "[]"); },
-            save: function(newData) {
-                const db = this.getAll();
-                db.push(newData);
-                db.sort((a, b) => b.score - a.score);
-                localStorage.setItem(this.key, JSON.stringify(db));
+            
+            // Ambil data (Read)
+            getAll: function() {
+                const data = localStorage.getItem(this.key);
+                return data ? JSON.parse(data) : [];
             },
+
+            // Simpan data (Write)
+            save: function(newData) {
+                const currentDB = this.getAll();
+                currentDB.push(newData);
+                
+                // Urutkan skor tertinggi (Descending)
+                currentDB.sort((a, b) => b.score - a.score);
+                
+                // Simpan format JSON String
+                localStorage.setItem(this.key, JSON.stringify(currentDB));
+            },
+
+            // Fitur Export JSON File
             downloadJSON: function() {
-                const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(this.getAll(), null, 4));
-                const a = document.createElement('a');
-                a.href = dataStr; a.download = "leaderboard.json";
-                a.click();
+                const data = this.getAll();
+                if(data.length === 0) { alert("Database masih kosong gess!"); return; }
+
+                const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(data, null, 4));
+                const anchor = document.createElement('a');
+                anchor.setAttribute("href", dataStr);
+                anchor.setAttribute("download", "leaderboard_database.json");
+                document.body.appendChild(anchor);
+                anchor.click();
+                anchor.remove();
             }
         };
 
-        // --- STATE ---
+        // --- GLOBAL STATE ---
         const STATE = {
             apiKey: "",
             user: { nama: "", avatar: "" },
             config: { topik: "", level: "", jumlah: 5 },
-            game: { soal: [], index: 0, score: 0, streak: 0, mistakes: [] }, // Added mistakes array
+            game: { soal: [], index: 0, score: 0, streak: 0 },
             voices: []
         };
         const synth = window.speechSynthesis;
 
-        // --- INIT ---
+        // --- CORE FUNCTIONS ---
         window.onload = () => {
             synth.onvoiceschanged = () => { STATE.voices = synth.getVoices(); };
-            const n = localStorage.getItem('quiz_username');
-            const k = localStorage.getItem('quiz_apikey');
-            if(n && k) { STATE.user.nama=n; STATE.apiKey=k; generateAvatar(n); showView('view-menu'); }
-            else showView('view-profile');
+            
+            const savedName = localStorage.getItem('quiz_username');
+            const savedKey = localStorage.getItem('quiz_apikey');
+            
+            if(savedName && savedKey) {
+                STATE.user.nama = savedName;
+                STATE.apiKey = savedKey;
+                generateAvatar(savedName);
+                showView('view-menu');
+                speak(`Halo ${savedName}, welcome back! Siap push rank?`);
+            } else {
+                showView('view-profile');
+            }
         };
 
-        // --- FUNCTIONS ---
         function generateAvatar(name) {
             STATE.user.avatar = `https://api.dicebear.com/9.x/bottts-neutral/svg?seed=${name}`;
             document.getElementById('avatar-user').src = STATE.user.avatar;
@@ -313,36 +295,40 @@
 
         function speak(text, callback) {
             synth.cancel();
-            const u = new SpeechSynthesisUtterance(text);
-            u.lang = 'id-ID'; u.rate = 1.1; u.pitch = 1.05;
-            const v = STATE.voices.find(vo => vo.lang.includes('ID')||vo.lang.includes('ind'));
-            if(v) u.voice = v;
-            u.onend = () => { if(callback) callback(); };
-            synth.speak(u);
-        }
-
-        // --- BACKGROUND DYNAMIC ---
-        function gantiBackground(topik) {
-            // Menggunakan Pollinations AI untuk generate gambar background sesuai topik
-            const bgEl = document.getElementById('dynamic-bg');
-            const encoded = encodeURIComponent(topik + " dark aesthetic wallpaper 4k minimalist");
-            const url = `https://image.pollinations.ai/prompt/${encoded}?width=1080&height=720&nologo=true`;
-            bgEl.style.backgroundImage = `url('${url}')`;
+            const utter = new SpeechSynthesisUtterance(text);
+            utter.lang = 'id-ID';
+            utter.rate = 1.1; 
+            utter.pitch = 1.05;
+            const indoVoice = STATE.voices.find(v => v.lang.includes('ID') || v.lang.includes('ind'));
+            if(indoVoice) utter.voice = indoVoice;
+            utter.onend = () => { if(callback) callback(); };
+            synth.speak(utter);
         }
 
         // --- ACTIONS ---
         function simpanProfil() {
-            const n = document.getElementById('input-nama').value.trim();
-            const k = document.getElementById('input-api').value.trim();
-            if(!n||!k) return alert("Isi woy!");
-            localStorage.setItem('quiz_username', n); localStorage.setItem('quiz_apikey', k);
-            STATE.user.nama=n; STATE.apiKey=k; generateAvatar(n);
-            showView('view-menu'); speak(`Halo ${n}, selamat datang!`);
+            const nama = document.getElementById('input-nama').value.trim();
+            const key = document.getElementById('input-api').value.trim();
+            if(!nama || !key) { alert("Isi lengkap dulu dong!"); return; }
+
+            localStorage.setItem('quiz_username', nama);
+            localStorage.setItem('quiz_apikey', key);
+            STATE.user.nama = nama; STATE.apiKey = key;
+            generateAvatar(nama);
+            showView('view-menu');
+            speak(`Yuhuu! Salam kenal ${nama}.`);
         }
 
-        function logout() { if(confirm("Logout?")) { localStorage.clear(); location.reload(); } }
+        function logout() {
+            if(confirm("Logout?")) {
+                localStorage.removeItem('quiz_username');
+                localStorage.removeItem('quiz_apikey');
+                location.reload();
+            }
+        }
+
         function kembaliKeMenu() { showView('view-menu'); }
-        function bukaKuis() { showView('view-setup'); speak("Pilih topik dulu gess."); }
+        function bukaKuis() { showView('view-setup'); speak("Oke, mau bahas topik apa?"); }
         function bukaLeaderboard() { renderLeaderboard(); showView('view-leaderboard'); }
 
         // --- GAME LOGIC ---
@@ -352,125 +338,109 @@
             STATE.config.jumlah = parseInt(document.getElementById('input-jumlah').value);
 
             showView('view-loading');
-            gantiBackground(STATE.config.topik); // TRIGGER BACKGROUND CHANGE
-
+            
             const prompt = `
-            Buatkan ${STATE.config.jumlah} soal kuis Pilihan Ganda '${STATE.config.topik}' level '${STATE.config.level}'.
-            Bahasa: Gaul, Santai. Output JSON Array Murni:
-            [{"q": "Tanya", "o": ["A. x", "B. y", "C. z", "D. w"], "a": "A", "exp": "Info singkat"}]
+            Buatkan ${STATE.config.jumlah} soal kuis Pilihan Ganda tentang '${STATE.config.topik}' level '${STATE.config.level}'.
+            Gaya bahasa: Gaul, santai (Pake kata: Bestie, Gess, Gokil).
+            Output HARUS JSON Array Murni:
+            [{"q": "Pertanyaan", "o": ["A. x", "B. y", "C. z", "D. w"], "a": "A", "exp": "Penjelasan singkat"}]
             `;
 
             try {
-                const res = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${STATE.apiKey}`, {
-                    method: 'POST', headers: {'Content-Type':'application/json'},
+                const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${STATE.apiKey}`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({ contents: [{ parts: [{ text: prompt }] }] })
                 });
-                const data = await res.json();
+
+                const data = await response.json();
                 const raw = data.candidates[0].content.parts[0].text.replace(/```json|```/g, "").trim();
                 STATE.game.soal = JSON.parse(raw);
-                STATE.game.index = 0; STATE.game.score = 0; STATE.game.streak = 0; 
-                STATE.game.mistakes = []; // RESET MISTAKES
-                
-                speak("Gas! Soal udah siap.", () => renderSoal());
-            } catch(e) { alert("AI Error/Limit."); kembaliKeMenu(); }
+                STATE.game.index = 0; STATE.game.score = 0; STATE.game.streak = 0;
+                speak("Soal siap! Fokus!", () => renderSoal());
+            } catch (e) {
+                alert("Error koneksi AI. Cek API Key.");
+                kembaliKeMenu();
+            }
         }
 
         function renderSoal() {
-            if(STATE.game.index >= STATE.game.soal.length) { finishGame(); return; }
+            if (STATE.game.index >= STATE.game.soal.length) { finishGame(); return; }
             showView('view-game');
-            const cur = STATE.game.soal[STATE.game.index];
-            document.getElementById('badge-soal').innerText = `Q ${STATE.game.index+1}/${STATE.game.soal.length}`;
+            const current = STATE.game.soal[STATE.game.index];
+            
+            document.getElementById('badge-soal').innerText = `Q ${STATE.game.index + 1}/${STATE.game.soal.length}`;
             document.getElementById('badge-score').innerText = `PTS: ${STATE.game.score}`;
-            document.getElementById('progress-bar').style.width = `${(STATE.game.index/STATE.game.soal.length)*100}%`;
-            document.getElementById('text-pertanyaan').innerText = cur.q;
+            document.getElementById('progress-bar').style.width = `${((STATE.game.index) / STATE.game.soal.length) * 100}%`;
+            document.getElementById('text-pertanyaan').innerText = current.q;
 
-            const div = document.getElementById('container-opsi'); div.innerHTML="";
-            cur.o.forEach(o => {
-                const k = o.charAt(0);
-                const b = document.createElement('button');
-                b.className = "w-full text-left p-4 bg-slate-800/80 hover:bg-indigo-600/50 border border-slate-700 rounded-xl text-slate-200 font-medium mb-3 transition";
-                b.innerHTML = `<span class="font-bold text-indigo-400 mr-2">${k}.</span> ${o.slice(2)}`;
-                b.onclick = () => check(k, cur);
-                div.appendChild(b);
+            const cont = document.getElementById('container-opsi');
+            cont.innerHTML = "";
+            current.o.forEach(opt => {
+                const key = opt.charAt(0);
+                const btn = document.createElement('button');
+                btn.className = "w-full text-left p-4 bg-slate-800/80 hover:bg-indigo-600/50 border border-slate-700 hover:border-indigo-400 rounded-xl transition text-sm md:text-base text-slate-200 font-medium group";
+                btn.innerHTML = `<span class="font-bold text-indigo-400 group-hover:text-white mr-2">${key}.</span> ${opt.slice(2)}`;
+                btn.onclick = () => checkAnswer(key, current.a, current.exp);
+                cont.appendChild(btn);
             });
-            speak(cur.q);
+            speak(current.q);
         }
 
-        function check(u, cur) {
+        function checkAnswer(user, correct, exp) {
             let msg = "";
-            if(u === cur.a) {
-                STATE.game.score += (10+STATE.game.streak); STATE.game.streak++;
+            if(user === correct) {
+                STATE.game.score += (10 + STATE.game.streak);
+                STATE.game.streak++;
                 document.getElementById('sfx-correct').play();
-                msg = `Mantap! ${cur.exp}`;
+                msg = `Mantap! Bener. ${exp}`;
             } else {
                 STATE.game.streak = 0;
                 document.getElementById('sfx-wrong').play();
-                msg = `Salah. Yg bener ${cur.a}. ${cur.exp}`;
-                // SAVE MISTAKE
-                STATE.game.mistakes.push({
-                    q: cur.q,
-                    ans: cur.a, // Kunci Jawaban (Huruf)
-                    fullAns: cur.o.find(op => op.startsWith(cur.a)), // Teks Jawaban Penuh
-                    exp: cur.exp
-                });
+                msg = `Salah bestie. Yang bener ${correct}. ${exp}`;
             }
-            speak(msg, () => { setTimeout(() => { STATE.game.index++; renderSoal(); }, 1000); });
+            speak(msg, () => {
+                setTimeout(() => { STATE.game.index++; renderSoal(); }, 500);
+            });
         }
 
         function finishGame() {
             showView('view-result');
             document.getElementById('sfx-win').play();
             document.getElementById('final-score').innerText = STATE.game.score;
-            document.getElementById('final-msg').innerText = STATE.game.score > 50 ? "GG Geming! 🔥" : "Belajar lagi dek 🗿";
+            
+            let msg = STATE.game.score > 50 ? "GG Geming! 🔥" : "Belajar lagi ya 🗿";
+            document.getElementById('final-msg').innerText = msg;
             document.getElementById('final-emoji').innerText = STATE.game.score > 50 ? "👑" : "🤕";
-            
-            DB.save({name:STATE.user.nama, topic:STATE.config.topik, score:STATE.game.score, date:new Date().toLocaleDateString()});
-            speak(`Game over. Skor lu ${STATE.game.score}`);
-        }
 
-        // --- NEW FEATURES: REVIEW & SHARE ---
-        
-        function bukaReview() {
-            if(STATE.game.mistakes.length === 0) { alert("Lu gak ada salah woy, GG! Sempurna."); return; }
-            
-            const div = document.getElementById('container-review');
-            div.innerHTML = "";
-            STATE.game.mistakes.forEach((m, i) => {
-                div.innerHTML += `
-                <div class="bg-slate-800/80 p-4 rounded-xl border border-red-500/30">
-                    <p class="font-bold text-slate-200 mb-2">${i+1}. ${m.q}</p>
-                    <div class="text-sm text-green-400 font-bold mb-1"><i class="fa-solid fa-check mr-1"></i> ${m.fullAns}</div>
-                    <p class="text-xs text-slate-400 italic">"${m.exp}"</p>
-                </div>`;
+            // SAVE TO JSON DB
+            DB.save({
+                name: STATE.user.nama,
+                topic: STATE.config.topik,
+                score: STATE.game.score,
+                date: new Date().toLocaleDateString()
             });
-            showView('view-review');
-        }
-
-        function shareSkor() {
-            // 1. Isi Data ke Template Tersembunyi
-            document.getElementById('share-avatar').src = STATE.user.avatar;
-            document.getElementById('share-name').innerText = STATE.user.nama;
-            document.getElementById('share-topic').innerText = STATE.config.topik.toUpperCase();
-            document.getElementById('share-score').innerText = STATE.game.score;
-
-            // 2. Generate Screenshot
-            const element = document.getElementById('share-card-template');
             
-            // Trik: Pastikan element ter-render browser
-            html2canvas(element, { useCORS: true, scale: 2 }).then(canvas => {
-                // 3. Download Image
-                const link = document.createElement('a');
-                link.download = `GeniusQuiz_${STATE.user.nama}_${STATE.game.score}.png`;
-                link.href = canvas.toDataURL();
-                link.click();
-            }).catch(err => alert("Gagal bikin gambar share :("));
+            speak(`Kelar! Skor lu ${STATE.game.score}. ${msg}`);
         }
 
         function renderLeaderboard() {
-            const d = DB.getAll(); const b = document.getElementById('tbody-leaderboard'); b.innerHTML="";
-            if(d.length===0) return b.innerHTML='<tr><td colspan="3" class="text-center py-4 text-slate-500">Kosong.</td></tr>';
-            d.forEach((i,x) => {
-                b.innerHTML+=`<tr class="border-b border-slate-800"><td class="py-3 pl-2 ${x===0?'text-yellow-400':''}">${x+1}</td><td><div class="font-bold text-slate-200">${i.name}</div><div class="text-xs text-slate-500">${i.topic}</div></td><td class="text-right pr-2 text-indigo-400 font-mono">${i.score}</td></tr>`;
+            const data = DB.getAll();
+            const tbody = document.getElementById('tbody-leaderboard');
+            tbody.innerHTML = "";
+            if(data.length === 0) { tbody.innerHTML = `<tr><td colspan="3" class="text-center py-8 text-slate-500">Database Kosong.</td></tr>`; return; }
+
+            data.forEach((item, index) => {
+                const color = index === 0 ? "text-yellow-400" : "text-slate-400";
+                tbody.innerHTML += `
+                    <tr class="border-b border-slate-800">
+                        <td class="py-3 pl-2 ${color}">#${index + 1}</td>
+                        <td class="py-3">
+                            <div class="font-bold text-slate-200">${item.name}</div>
+                            <div class="text-xs text-slate-500">${item.topic}</div>
+                        </td>
+                        <td class="py-3 text-right pr-2 font-mono text-indigo-400">${item.score}</td>
+                    </tr>`;
             });
         }
     </script>
